@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 import argparse
 import logging
@@ -36,8 +36,10 @@ if __name__ == '__main__':
     )
     args = parser.parse_args()
     logging.basicConfig(level=args.loglevel)
-    directories_to_visit = set()
-    for line in args.infile.readlines():
+    shell_bin = os.environ['SHELL']
+    logging.debug("SHELL = '{}'".format(shell_bin))
+    already_visited = set()
+    for i, line in enumerate(args.infile.readlines()):
         visit_dir = None
         candidate = line.rstrip()
         logging.debug("candidate = '{}'".format(candidate))
@@ -46,19 +48,26 @@ if __name__ == '__main__':
         elif os.path.isfile(candidate):
             visit_dir = os.path.dirname(candidate)
         else:
-            logging.warning("does not exist: '{}'\n".format(candidate))
+            logging.warning("does not exist: '{}'".format(candidate))
             continue
         if visit_dir is not None:
             real_dir = os.path.realpath(visit_dir)
-            directories_to_visit.add(real_dir)
         else:
             # Should not happen.
-            logging.warning("could not determine directory for path: '{}'\n".format(candidate))
+            logging.warning("could not determine directory for path: '{}'".format(candidate))
             continue
-
-    shell_bin = os.environ['SHELL']
-    logging.debug("SHELL = '{}'".format(shell_bin))
-    for directory in directories_to_visit:
-        logging.info("spawning '{}' in '{}'".format(shell_bin, directory))
+        if visit_dir in already_visited:
+            logging.info("already visited: '{}'".format(visit_dir))
+            continue
+        elif real_dir in already_visited:
+            logging.info("already visited: '{}' -> '{}'".format(visit_dir, real_dir))
+            continue
+        if i != 0:
+            response = input("Continue? (y/n) ")
+            if response in ["n", "no"]:
+                break
+        logging.info("spawning '{}' in '{}'".format(shell_bin, visit_dir))
         run_args = [shell_bin, "-i"]
-        subprocess.Popen(["/bin/bash", "-i"], shell=True, cwd=directory, stdin=sys.stdin)
+        subprocess.call(run_args, cwd=visit_dir)
+        already_visited.add(visit_dir)
+        already_visited.add(real_dir)
