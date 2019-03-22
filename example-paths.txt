@@ -1,0 +1,4 @@
+/etc/
+/usr/share/dict/words
+/usr/share/dict/
+/var/log
