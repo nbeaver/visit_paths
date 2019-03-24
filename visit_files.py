@@ -39,7 +39,9 @@ if __name__ == '__main__':
     shell_bin = os.environ['SHELL']
     logging.debug("SHELL = '{}'".format(shell_bin))
     already_visited = set()
-    for i, line in enumerate(args.infile.readlines()):
+    lines = args.infile.readlines()
+    n_lines = len(lines)
+    for i, line in enumerate(lines):
         visit_dir = None
         candidate = line.rstrip()
         logging.debug("candidate = '{}'".format(candidate))
@@ -63,7 +65,7 @@ if __name__ == '__main__':
             logging.info("already visited: '{}' -> '{}'".format(visit_dir, real_dir))
             continue
         if i != 0:
-            response = input("Continue? (y/n) ")
+            response = input("{}/{}. Continue? (y/n) ".format(i, n_lines))
             if response in ["n", "no"]:
                 break
         logging.info("spawning '{}' in '{}'".format(shell_bin, visit_dir))
