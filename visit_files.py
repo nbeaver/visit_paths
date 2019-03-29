@@ -39,9 +39,9 @@ if __name__ == '__main__':
     shell_bin = os.environ['SHELL']
     logging.debug("SHELL = '{}'".format(shell_bin))
     already_visited = set()
-    lines = args.infile.readlines()
-    n_lines = len(lines)
-    for i, line in enumerate(lines):
+    n_visits = 0
+    n_skipped = 0
+    for i, line in enumerate(args.infile):
         visit_dir = None
         candidate = line.rstrip()
         logging.debug("candidate = '{}'".format(candidate))
@@ -51,21 +51,29 @@ if __name__ == '__main__':
             visit_dir = os.path.dirname(candidate)
         else:
             logging.warning("does not exist: '{}'".format(candidate))
+            n_skipped +=1
             continue
         if visit_dir is not None:
             real_dir = os.path.realpath(visit_dir)
         else:
             # Should not happen.
             logging.warning("could not determine directory for path: '{}'".format(candidate))
+            n_skipped +=1
             continue
         if visit_dir in already_visited:
             logging.info("already visited: '{}'".format(visit_dir))
+            n_skipped +=1
             continue
         elif real_dir in already_visited:
             logging.info("already visited: '{}' -> '{}'".format(visit_dir, real_dir))
+            n_skipped +=1
             continue
         if i != 0:
-            response = input("{}/{}. Continue? (y/n) ".format(i, n_lines))
+            try :
+                response = input("#{}. Continue? (y/n) ".format(n_visits + 1))
+            except EOFError:
+                sys.stdout.write('\n')
+                break
             if response in ["n", "no"]:
                 break
         logging.info("spawning '{}' in '{}'".format(shell_bin, visit_dir))
@@ -73,3 +81,8 @@ if __name__ == '__main__':
         subprocess.call(run_args, cwd=visit_dir)
         already_visited.add(visit_dir)
         already_visited.add(real_dir)
+        n_visits +=1
+
+    logging.info("# paths received: {}".format(i + 1))
+    logging.info("distinct directories visited: {}".format(n_visits))
+    logging.info("paths skipped: {}".format(n_skipped))
