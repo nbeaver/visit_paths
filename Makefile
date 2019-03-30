@@ -1,8 +1,8 @@
 test-file :
-	./visit_files.py --debug example-paths.txt
+	./visit_paths.py --debug example-paths.txt
 
 test-pipe :
-	printf '/etc/\n/usr/share/dict/words\n/var/' | ./visit_files.py --debug
+	printf '/etc/\n/usr/share/dict/words\n/var/' | ./visit_paths.py --debug
 
 test-slow :
-	./slow-output.sh | ./visit_files.py --debug
+	./slow-output.sh | ./visit_paths.py --debug
