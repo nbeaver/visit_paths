@@ -6,3 +6,9 @@ test-pipe :
 
 test-slow :
 	./slow-output.sh | ./visit_paths.py --debug
+
+test-slow-pipe :
+	./slow-output.sh | tee output.txt | ./visit_paths.py --debug
+
+clean :
+	rm -f -- output.txt
