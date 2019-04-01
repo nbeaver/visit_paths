@@ -78,7 +78,8 @@ if __name__ == '__main__':
                 break
         logging.info("spawning '{}' in '{}'".format(shell_bin, visit_dir))
         run_args = [shell_bin, "-i"]
-        subprocess.call(run_args, cwd=visit_dir, stdin=open('/dev/tty'))
+        with open('/dev/tty') as fp_tty:
+            subprocess.call(run_args, cwd=visit_dir, stdin=fp_tty)
         already_visited.add(visit_dir)
         already_visited.add(real_dir)
         n_visits +=1
