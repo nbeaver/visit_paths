@@ -4,6 +4,9 @@ test-file :
 test-pipe :
 	printf '/etc/\n/usr/share/dict/words\n/var/' | ./visit_paths.py --debug
 
+test-pipe-fixed :
+	printf '/etc/\n/usr/share/dict/words\n/var/' | ./visit_paths.py --debug /dev/fd/3 3<&0 < /dev/tty
+
 test-slow :
 	./slow-output.sh | ./visit_paths.py --debug
 
