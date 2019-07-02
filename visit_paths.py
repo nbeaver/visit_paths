@@ -70,7 +70,7 @@ if __name__ == '__main__':
             continue
         if i != 0:
             try :
-                response = input("#{}. Continue? (y/n) ".format(n_visits + 1))
+                response = input("#{}. Enter 'n' to stop or just enter to continue: ".format(n_visits + 1))
             except EOFError:
                 sys.stdout.write('\n')
                 break
