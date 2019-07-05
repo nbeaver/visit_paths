@@ -41,6 +41,7 @@ if __name__ == '__main__':
     already_visited = set()
     n_visits = 0
     n_skipped = 0
+    i = None
     for i, line in enumerate(args.infile):
         visit_dir = None
         candidate = line.rstrip()
@@ -84,6 +85,9 @@ if __name__ == '__main__':
         already_visited.add(real_dir)
         n_visits +=1
 
-    print("paths received: {}".format(i + 1))
+    if i is None:
+        print("paths received: 0")
+    else:
+        print("paths received: {}".format(i + 1))
     print("distinct directories visited: {}".format(n_visits))
     print("duplicate paths skipped: {}".format(n_skipped))
