@@ -13,5 +13,11 @@ test-slow :
 test-slow-pipe :
 	./slow-output.sh | tee output.txt | ./visit_paths.py --debug
 
+test-none :
+	printf '' | ./visit_paths.py --debug
+
+test-blank-line :
+	printf '\n' | ./visit_paths.py --debug
+
 clean :
 	rm -f -- output.txt
