@@ -6,36 +6,7 @@ import os
 import subprocess
 import sys
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(
-        description='Visit files from file or stdin.'
-    )
-    parser.add_argument(
-        '-v',
-        '--verbose',
-        help='More verbose logging',
-        dest="loglevel",
-        default=logging.WARNING,
-        action="store_const",
-        const=logging.INFO,
-    )
-    parser.add_argument(
-        '-d',
-        '--debug',
-        help='Enable debugging logs',
-        action="store_const",
-        dest="loglevel",
-        const=logging.DEBUG,
-    )
-    parser.add_argument(
-        'infile',
-        nargs='?',
-        type=argparse.FileType('r'),
-        default=sys.stdin,
-        help='Input file (or stdin)',
-    )
-    args = parser.parse_args()
-    logging.basicConfig(level=args.loglevel)
+def visit_paths(read_from=sys.stdin):
     shell_bin = os.environ['SHELL']
     logging.debug("SHELL = '{}'".format(shell_bin))
     already_visited = set()
@@ -91,3 +62,35 @@ if __name__ == '__main__':
         print("paths received: {}".format(i + 1))
     print("distinct directories visited: {}".format(n_visits))
     print("duplicate paths skipped: {}".format(n_skipped))
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(
+        description='Visit files from file or stdin.'
+    )
+    parser.add_argument(
+        '-v',
+        '--verbose',
+        help='More verbose logging',
+        dest="loglevel",
+        default=logging.WARNING,
+        action="store_const",
+        const=logging.INFO,
+    )
+    parser.add_argument(
+        '-d',
+        '--debug',
+        help='Enable debugging logs',
+        action="store_const",
+        dest="loglevel",
+        const=logging.DEBUG,
+    )
+    parser.add_argument(
+        'infile',
+        nargs='?',
+        type=argparse.FileType('r'),
+        default=sys.stdin,
+        help='Input file (or stdin)',
+    )
+    args = parser.parse_args()
+    logging.basicConfig(level=args.loglevel)
+    visit_paths(args.infile)
