@@ -16,5 +16,8 @@ test-none :
 test-blank-line :
 	printf '\n' | ./visit_paths.py --debug
 
+test-non-existent :
+	printf '/blah/\n/this/do/not/exist\n/none/' | ./visit_paths.py --debug
+
 clean :
 	rm -f -- output.txt
