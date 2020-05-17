@@ -8,6 +8,11 @@ import sys
 
 def visit_paths(read_from=sys.stdin):
 
+    if read_from == sys.stdin:
+        old_stdin = sys.stdin
+        sys.stdin = open('/dev/tty')
+        read_from = old_stdin
+
     shell_bin = os.environ['SHELL']
     logging.debug("SHELL = '{}'".format(shell_bin))
     already_visited = set()
