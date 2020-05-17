@@ -52,6 +52,8 @@ def visit_paths(read_from=sys.stdin):
         while True:
             logging.info("spawning '{}' in '{}'".format(shell_bin, visit_dir))
             run_args = [shell_bin, "-i"]
+            if os.path.isfile(candidate):
+                print("filename = '{}'".format(os.path.basename(candidate)))
             with open('/dev/tty') as fp_tty:
                 subprocess.call(run_args, cwd=visit_dir, stdin=fp_tty)
             while True:
