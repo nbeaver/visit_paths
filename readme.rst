@@ -1,32 +1,34 @@
-I want to read a list of pathnames on stdin,
-then drop into a new interactive shell in each of those directories
+==============
+visit_paths.py
+==============
+
+Description
+-----------
+
+Visit paths from a file or stdin.
+
+
+Specifically, the script reads a list of pathnames
+on stdin or from the given file,
+then drops into a new interactive shell in each of those directories
 (or parent directory if it's a file).
 
-This is easy enough when reading from a file,
-but when reading from a pipe
-the newly spawned shell consumes the rest of stdin
-and then exits.
+Features:
 
-How can I stop this from happening?
+- Slow-running processes continue to run in the background
+  while interactive shell is running.
 
-Something like ``os.execlp`` is even worse,
-because it replaces the parent process entirely.
+- Prompt allow re-visiting last directory.
 
-Not the same as this:
+- Prompt allows early exit.
 
-https://stackoverflow.com/questions/28008594/how-do-i-fork-a-new-process-with-independent-stdout-stderr-and-stdin
+Example usage
+-------------
 
-because I don't want the parent process to terminate,
-I want it to stick around to spawn the next shell
-regardless of what happens in the child shell.
+Find world-readable files in `$HOME`::
 
-Not the same as this:
+    find $HOME '!' -type l -perm 777 | ./visit_paths.py
 
-https://stackoverflow.com/questions/27624850/launch-a-completely-independent-process
+Find broken symbolic links in `$HOME`::
 
-https://stackoverflow.com/questions/20646519/how-to-spawn-a-new-independent-process-in-python
-
-https://stackoverflow.com/questions/22433913/spawn-a-subprocess-in-foreground-even-after-python-exits
-
-because I don't want the shell to stay around
-after the parent process is finished.
+    find $HOME -xtype l | ./visit_paths.py
