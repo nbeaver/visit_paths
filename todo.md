@@ -13,4 +13,4 @@ https://stackoverflow.com/questions/40270252/eoferror-when-using-input-after-usi
 
 - [ ] Add a `--terse` or `--quiet` flag?
 
-- [ ] Add an interactive option to go back to the directory just visited.
+- [x] Add an interactive option to go back to the directory just visited.

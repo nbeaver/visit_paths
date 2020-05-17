@@ -7,12 +7,14 @@ import subprocess
 import sys
 
 def visit_paths(read_from=sys.stdin):
+
     shell_bin = os.environ['SHELL']
     logging.debug("SHELL = '{}'".format(shell_bin))
     already_visited = set()
     n_visits = 0
     n_skipped = 0
     i = None
+    quit = False
     for i, line in enumerate(args.infile):
         visit_dir = None
         candidate = line.rstrip()
@@ -40,21 +42,47 @@ def visit_paths(read_from=sys.stdin):
             logging.info("already visited: '{}' -> '{}'".format(visit_dir, real_dir))
             n_skipped +=1
             continue
-        if i != 0:
-            try :
-                response = input("#{}. Enter 'q' to quit or just enter to continue: ".format(n_visits + 1))
-            except EOFError:
-                sys.stdout.write('\n')
+
+        go_back = False
+        while True:
+            logging.info("spawning '{}' in '{}'".format(shell_bin, visit_dir))
+            run_args = [shell_bin, "-i"]
+            with open('/dev/tty') as fp_tty:
+                subprocess.call(run_args, cwd=visit_dir, stdin=fp_tty)
+            while True:
+                try :
+                    response = input("#{}. Enter 'q' to quit, 'b' to go back, or 'Enter' to continue: ".format(n_visits + 1))
+                except EOFError:
+                    sys.stdout.write('\n')
+                    logging.debug("got Ctrl-D, quitting".format(visit_dir))
+                    quit = True
+                    go_back = False
+                    break
+                if response in ["b", "back"]:
+                    logging.info("got '{}', going back to '{}'".format(response, visit_dir))
+                    go_back = True
+                    break
+                elif response in ["q", "quit", "exit"]:
+                    logging.debug("got '{}', quitting".format(response))
+                    quit = True
+                    go_back = False
+                    break
+                elif response in [""]:
+                    logging.debug("got '{}', continuing".format(response))
+                    go_back = False
+                    break
+                else:
+                    logging.debug("got '{}', trying again".format(response))
+                    continue
+            if not go_back:
                 break
-            if response in ["q", "quit", "exit"]:
-                break
-        logging.info("spawning '{}' in '{}'".format(shell_bin, visit_dir))
-        run_args = [shell_bin, "-i"]
-        with open('/dev/tty') as fp_tty:
-            subprocess.call(run_args, cwd=visit_dir, stdin=fp_tty)
+
         already_visited.add(visit_dir)
         already_visited.add(real_dir)
         n_visits +=1
+
+        if quit:
+            break
 
     if i is None:
         print("paths received: 0")
