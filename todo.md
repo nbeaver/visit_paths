@@ -1,3 +1,5 @@
+- [ ] Don't skip broken symlinks.
+
 - [x] Make this work with a pipe
 
   - https://stackoverflow.com/questions/40270252/eoferror-when-using-input-after-using-sys-stdin-buffer-read
