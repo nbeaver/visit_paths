@@ -24,10 +24,11 @@ def visit_paths(read_from=sys.stdin):
         visit_dir = None
         candidate = line.rstrip()
         logging.debug("candidate = '{}'".format(candidate))
+        parent_dir = os.path.dirname(candidate)
         if os.path.isdir(candidate):
             visit_dir = candidate
-        elif os.path.isfile(candidate):
-            visit_dir = os.path.dirname(candidate)
+        elif os.path.isdir(parent_dir):
+            visit_dir = parent_dir
         else:
             logging.warning("does not exist: '{}'".format(candidate))
             n_skipped +=1
@@ -52,7 +53,7 @@ def visit_paths(read_from=sys.stdin):
         while True:
             logging.info("spawning '{}' in '{}'".format(shell_bin, visit_dir))
             run_args = [shell_bin, "-i"]
-            if os.path.isfile(candidate):
+            if not os.path.isdir(candidate):
                 print("filename = '{}'".format(os.path.basename(candidate)))
             with open('/dev/tty') as fp_tty:
                 subprocess.call(run_args, cwd=visit_dir, stdin=fp_tty)
