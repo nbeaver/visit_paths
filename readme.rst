@@ -7,7 +7,6 @@ Description
 
 Visit paths from a file or stdin.
 
-
 Specifically, the script reads a list of pathnames
 on stdin or from the given file,
 then drops into a new interactive shell in each of those directories
@@ -32,3 +31,7 @@ Find world-readable files in `$HOME`::
 Find broken symbolic links in `$HOME`::
 
     find $HOME -xtype l | ./visit_paths.py
+
+Visit git repositories under current directory::
+
+    find . -type d -name '.git' | ./visit_paths.py --parent
