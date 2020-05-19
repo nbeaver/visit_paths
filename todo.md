@@ -1,4 +1,4 @@
-- [ ] Add a `--parent` flag to go to the parent directory.
+- [x] Add a `--parent` flag to go to the parent directory.
 
 - [x] Don't skip broken symlinks.
 
