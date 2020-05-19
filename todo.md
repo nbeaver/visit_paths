@@ -1,3 +1,5 @@
+- [ ] Add a `--parent` flag to go to the parent directory.
+
 - [x] Don't skip broken symlinks.
 
 - [x] Make this work with a pipe
