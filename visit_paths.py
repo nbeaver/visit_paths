@@ -6,7 +6,7 @@ import os
 import subprocess
 import sys
 
-def visit_paths(read_from=sys.stdin):
+def visit_paths(read_from=sys.stdin, visit_parent=False):
 
     if read_from == sys.stdin:
         old_stdin = sys.stdin
@@ -26,7 +26,10 @@ def visit_paths(read_from=sys.stdin):
         logging.debug("candidate = '{}'".format(candidate))
         parent_dir = os.path.dirname(candidate)
         if os.path.isdir(candidate):
-            visit_dir = candidate
+            if visit_parent:
+                visit_dir = parent_dir
+            else:
+                visit_dir = candidate
         elif os.path.isdir(parent_dir):
             visit_dir = parent_dir
         else:
@@ -104,6 +107,12 @@ if __name__ == '__main__':
         description='Visit files from file or stdin.'
     )
     parser.add_argument(
+        '-p',
+        '--parent',
+        help='Visit parent directory of path',
+        action="store_true",
+    )
+    parser.add_argument(
         '-v',
         '--verbose',
         help='More verbose logging',
@@ -129,4 +138,4 @@ if __name__ == '__main__':
     )
     args = parser.parse_args()
     logging.basicConfig(level=args.loglevel)
-    visit_paths(args.infile)
+    visit_paths(args.infile, args.parent)
