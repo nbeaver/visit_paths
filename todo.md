@@ -1,4 +1,4 @@
-- [ ] Don't skip broken symlinks.
+- [x] Don't skip broken symlinks.
 
 - [x] Make this work with a pipe
 
