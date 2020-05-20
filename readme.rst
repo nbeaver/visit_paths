@@ -34,4 +34,4 @@ Find broken symbolic links in `$HOME`::
 
 Visit git repositories under current directory::
 
-    find . -type d -name '.git' | ./visit_paths.py --parent
+    find . -type d -name '.git' | visit_paths.py --parent
