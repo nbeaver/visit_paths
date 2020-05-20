@@ -1,3 +1,7 @@
+- [ ] Optionally handle null-delimited paths in place of newline-delimited paths.
+
+- [ ] List the matching file when skipping over an already visited directory?
+
 - [x] Add a `--parent` flag to go to the parent directory.
 
 - [x] Don't skip broken symlinks.
