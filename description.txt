@@ -1,0 +1,1 @@
+Take paths from file or stdin and visit each one in an interactive shell.
