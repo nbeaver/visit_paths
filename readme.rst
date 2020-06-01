@@ -35,3 +35,11 @@ Find broken symbolic links in `$HOME`::
 Visit git repositories under current directory::
 
     find . -type d -name '.git' | visit_paths.py --parent
+
+Visit executables under current directory::
+
+    find . -type f -executable -print | visit_paths.py
+
+Visit vim swap files current directory::
+
+    find . -type f -name '*.sw?' | visit_paths.py
