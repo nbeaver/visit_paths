@@ -1,3 +1,5 @@
+- [ ] Change name to `visitpaths.py` or `visitfiles.py` to avoid typing underscore?
+
 - [ ] Optionally handle null-delimited paths in place of newline-delimited paths.
 
 - [ ] List the matching file when skipping over an already visited directory?
