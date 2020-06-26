@@ -1,3 +1,5 @@
+- [ ] A `--follow-symlinks` / `-f` flag to follow symbolic links / use realpath.
+
 - [ ] Change name to `visitpaths.py` or `visitfiles.py` to avoid typing underscore?
 
 - [ ] Optionally handle null-delimited paths in place of newline-delimited paths.
