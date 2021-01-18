@@ -17,6 +17,8 @@ Features:
 - Slow-running processes continue to run in the background
   while interactive shell is running.
 
+- De-duplication to avoid visiting the same directory twice.
+
 - Prompt allow re-visiting last directory.
 
 - Prompt allows early exit.
