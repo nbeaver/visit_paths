@@ -1,12 +1,6 @@
-- [ ] A `--follow-symlinks` / `-f` flag to follow symbolic links / use realpath.
-
 - [ ] Change name to `visitpaths.py` or `visitfiles.py` to avoid typing underscore?
 
-- [ ] Optionally handle null-delimited paths in place of newline-delimited paths.
-
 - [ ] List the matching file when skipping over an already visited directory?
-
-- [x] Add a `--parent` flag to go to the parent directory.
 
 - [x] Don't skip broken symlinks.
 
@@ -18,6 +12,15 @@
 
   - https://unix.stackexchange.com/questions/25372/turn-off-buffering-in-pipe
 
+- [x] Add an interactive option to go back to the directory just visited.
+
+Flags to add
+------------
+
+- [ ] A `--follow-symlinks` / `-f` flag to follow symbolic links / use realpath.
+
+- [ ] Optionally handle null-delimited paths in place of newline-delimited paths.
+
 - [ ] Add a `--terse` or `--quiet` flag?
 
-- [x] Add an interactive option to go back to the directory just visited.
+- [x] Add a `--parent` flag to go to the parent directory.
