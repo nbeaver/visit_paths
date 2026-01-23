@@ -10,7 +10,14 @@ def visit_paths(read_from=sys.stdin, visit_parent=False):
 
     if read_from == sys.stdin:
         old_stdin = sys.stdin
-        sys.stdin = open('/dev/tty')
+        if os.path.exists('/dev/tty'):
+            sys.stdin = open('/dev/tty')
+            tty_path = '/dev/tty'
+        elif os.path.exists('con'):
+            sys.stdin = open('con')
+            tty_path = 'con'
+        else:
+            raise FileNotFoundError("could not reassign stdin for OS: '{}'".format(os.name))
         read_from = old_stdin
 
     shell_bin = os.environ['SHELL']
@@ -58,7 +65,7 @@ def visit_paths(read_from=sys.stdin, visit_parent=False):
             run_args = [shell_bin, "-i"]
             if not os.path.isdir(candidate):
                 print("filename = '{}'".format(os.path.basename(candidate)))
-            with open('/dev/tty') as fp_tty:
+            with open(tty_path) as fp_tty:
                 subprocess.call(run_args, cwd=visit_dir, stdin=fp_tty)
             while True:
                 try :
