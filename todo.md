@@ -24,3 +24,5 @@ Flags to add
 - [ ] Add a `--terse` or `--quiet` flag?
 
 - [x] Add a `--parent` flag to go to the parent directory.
+
+- [ ] Add a `--skip-subdirs` flag to skip any subdirectories of an already visited directory
